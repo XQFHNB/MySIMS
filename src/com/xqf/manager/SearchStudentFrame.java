@@ -1,4 +1,6 @@
-package com.xqf.basic;
+package com.xqf.manager;
+
+import com.xqf.basic.MyFrame;
 
 import javax.swing.*;
 import java.awt.*;

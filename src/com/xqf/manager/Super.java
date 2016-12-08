@@ -1,5 +1,6 @@
-package com.xqf.basic;
+package com.xqf.manager;
 
+import com.xqf.basic.MyFrame;
 import com.xqf.db.DBHelper;
 
 import javax.swing.*;
@@ -10,6 +11,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Vector;
 
 /**
  * Created by XQF on 2016/12/7.
@@ -54,11 +56,13 @@ public class Super extends MyFrame implements ActionListener {
         scrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         JPanel panelInfo = new JPanel(new BorderLayout());
-        String infoContent = refresh(Num);
-        JTextArea info = new JTextArea(infoContent);
-        info.setEnabled(false);
+
+        //加一个table
+
+        JTable table = refresh(Num);
+        table.setEnabled(false);
         // TODO: 2016/12/7 解决info的数据信息填充
-        panelInfo.add(info);
+        panelInfo.add(table);
         scrollPane1.setViewportView(panelInfo);
 
 
@@ -83,11 +87,24 @@ public class Super extends MyFrame implements ActionListener {
         return panel;
     }
 
-    private String refresh(int Num) {
+    private JTable refresh(int Num) {
         String resultString = null;
         StringBuffer sb = new StringBuffer();
         Connection connection = DBHelper.getDbHelper().getConnection();
+        Vector allVector = new Vector();
+        Vector tablehead = new Vector();
         if (Num == 1) {
+            //表头
+
+            tablehead.add("学号");
+            tablehead.add("姓名");
+            tablehead.add("性别");
+            tablehead.add("出生年月");
+            tablehead.add("专业号");
+            tablehead.add("专业名称");
+            tablehead.add("班级");
+
+            //表的内容
 
             String sqlQueryStudentsString = "select * from students";
             try {
@@ -95,39 +112,48 @@ public class Super extends MyFrame implements ActionListener {
                 ResultSet result = stmt.executeQuery(sqlQueryStudentsString);
 
                 while (result.next()) {
-                    sb.append(result.getString("Sno") + " "
-                            + result.getString("Sname") + " "
-                            + result.getString("Ssex") + " "
-                            + result.getString("Sborn_age") + " "
-                            + result.getInt("Smajor_no") + " "
-                            + result.getString("Smajor") + " "
-                            + result.getInt("Sclass") + "\n");
+                    Vector contentVector = new Vector();
+
+                    contentVector.add(result.getString("Sno"));
+                    contentVector.add(result.getString("Sname"));
+                    contentVector.add(result.getString("Ssex"));
+                    contentVector.add(result.getString("Sborn_age"));
+                    contentVector.add(result.getInt("Smajor_no"));
+                    contentVector.add(result.getString("Smajor"));
+                    contentVector.add(result.getInt("Sclass"));
+                    allVector.add(contentVector);
                 }
                 System.out.println(sb.toString());
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            resultString = sb.toString();
         } else {
             // TODO: 2016/12/7 查询老师的有关逻辑
+            tablehead.add("课程号");
+            tablehead.add("课程名");
+            tablehead.add("老师");
+            tablehead.add("学分");
+
+
             String sqlQueryTeachersString = "select * from course";
             try {
                 Statement stmt1 = connection.createStatement();
                 ResultSet result1 = stmt1.executeQuery(sqlQueryTeachersString);
                 while (result1.next()) {
-                    sb.append(result1.getInt("Cmajor") + " "
-                            + result1.getInt("Cno") + " "
-                            + result1.getString("Cname") + " "
-                            + result1.getString("CteacherName") + " "
-                            + result1.getInt("Ccredit") + " "
-                            + result1.getInt("Cnature") + "\n");
+                    Vector contentVector = new Vector();
+
+                    contentVector.add(result1.getInt("Cno"));
+                    contentVector.add(result1.getString("Cname"));
+                    contentVector.add(result1.getString("Cteacher"));
+                    contentVector.add(result1.getInt("Ccredit"));
+                    allVector.add(contentVector);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            resultString = sb.toString();
         }
-        return resultString;
+        JTable table = new JTable(allVector, tablehead);
+        return table;
     }
 
     public static void main(String[] args) {
@@ -143,17 +169,17 @@ public class Super extends MyFrame implements ActionListener {
         if (btnString.equals(SEARCH_STUDENT)) {
             new SearchStudentFrame("查询学生");
         }
-        if (btnString.equals(DELETE_STUDENT)){
-            // TODO: 2016/12/7 删除一个学生不只是从这里的基本信息表中删除，而是还要删除其他表中的内容，这就涉及到一些查询语句了 
+        if (btnString.equals(DELETE_STUDENT)) {
+            // TODO: 2016/12/7 删除一个学生不只是从这里的基本信息表中删除，而是还要删除其他表中的内容，这就涉及到一些查询语句了
         }
-        if(btnString.equals(ADD_TEACHER_BTN)){
+        if (btnString.equals(ADD_TEACHER_BTN)) {
             // TODO: 2016/12/7 添加老师也是添加课程
         }
-        if(btnString.equals(DELETE_TEACHER)){
-            
+        if (btnString.equals(DELETE_TEACHER)) {
+
         }
-        if (btnString.equals(SEARCH_TEACHER)){
-            
+        if (btnString.equals(SEARCH_TEACHER)) {
+
         }
         if (btnString.equals(REFRESH)) {
             // TODO: 2016/12/7 点击刷新按钮会刷新两个界面的内容，因此两个调用refresh方法

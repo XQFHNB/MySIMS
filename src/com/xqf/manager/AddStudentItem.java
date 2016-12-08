@@ -1,4 +1,4 @@
-package com.xqf.basic;
+package com.xqf.manager;
 
 import javax.swing.*;
 

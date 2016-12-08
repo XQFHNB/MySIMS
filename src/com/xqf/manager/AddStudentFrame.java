@@ -1,5 +1,6 @@
-package com.xqf.basic;
+package com.xqf.manager;
 
+import com.xqf.basic.MyFrame;
 import com.xqf.db.DBHelper;
 
 import javax.swing.*;
@@ -81,6 +82,7 @@ public class AddStudentFrame extends MyFrame implements ActionListener {
 
     }
 
+    // TODO: 2016/12/8 测试我的数据是不是已经成功插入
     @Override
     public void actionPerformed(ActionEvent e) {
         String btnString = e.getActionCommand();

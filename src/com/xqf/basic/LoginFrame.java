@@ -1,6 +1,9 @@
 package com.xqf.basic;
 
+import com.xqf.config.Config;
+import com.xqf.manager.Super;
 import com.xqf.student.StudentFrame;
+import com.xqf.teacher.TeacherFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -110,13 +113,17 @@ public class LoginFrame extends JFrame implements ActionListener {
 //        new Super(jcb.getSelectedItem().toString());
         String itemString = jcb.getSelectedItem().toString();
         if (itemString.equals(LoginFrame.SPUER_ITEM)) {
-            // TODO: 2016/12/7 超级管理登陆 
+            // TODO: 2016/12/7 超级管理登陆
+            new Super(Config.TITLE);
         }
         if (itemString.equals(LoginFrame.STUDENT_ITEM)) {
             // TODO: 2016/12/7 学生登陆
-            new StudentFrame("学生登陆");
+            String studentNo = username.getText().trim();
+            new StudentFrame(Config.TITLE, studentNo);
         }
         if (itemString.equals(TEACHER_ITEM)) {
+            String teacherNo = username.getText().trim();
+            new TeacherFrame(Config.TITLE, teacherNo);
             // TODO: 2016/12/7 教师登陆
         }
     }
