@@ -89,7 +89,7 @@ public class MyTeacherFrame extends MyFrame {
         tablehead.add("分数");
         try {
             Statement stmt = connection.createStatement();
-            stmt.execute(Config.DROP_VIEW);
+       //     stmt.execute(Config.DROP_VIEW);
             stmt.execute(sqlCreateViewString);
             ResultSet result = stmt.executeQuery(Config.QUERY_VIEW);
             while (result.next()) {
