@@ -102,13 +102,15 @@ public class Super extends MyFrame implements ActionListener {
             new AddStudentFrame("添加学生");
         }
         if (btnString.equals(SEARCH_STUDENT)) {
-            new SearchStudentFrame("查询学生", "");
+            new SearchStudentFrame("查询学生", null, "");
         }
         if (btnString.equals(DELETE_STUDENT)) {
             // TODO: 2016/12/7 删除一个学生不只是从这里的基本信息表中删除，而是还要删除其他表中的内容，这就涉及到一些查询语句了
+            new DeleteStudentFrame("删除学生", null, "");
         }
         if (btnString.equals(ADD_TEACHER_BTN)) {
             // TODO: 2016/12/7 添加老师也是添加课程
+            new AddTeacherFrame("heh");
         }
         if (btnString.equals(DELETE_TEACHER)) {
 
