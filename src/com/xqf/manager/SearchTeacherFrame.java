@@ -9,24 +9,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by XQF on 2016/12/7.
+ * Created by XQF on 2016/12/12.
  */
-
-//搞死人了，。，。，
-public class SearchStudentFrame extends MyFrame implements ActionListener {
-
-    private static final String BY_NUMBER = "按学号";
+public class SearchTeacherFrame extends MyFrame implements ActionListener {
+    private static final String BY_NUMBER = "按编号";
     private static final String BY_NAME = "按姓名";
-    private static final String BY_MAJOR = "按专业";
+    private static final String BY_COURSENAME = "按课程";
+    private static final String BY_COURSENO = "按课程号";
     private static final String SEARCH = "查询";
+
 
     private JComboBox jcb;
     private JTextField textField;
     private JButton searchBtn;
     private SelectTool selectTool;
 
-
-    public SearchStudentFrame(String titleString, JTable table, String textString) {
+    public SearchTeacherFrame(String titleString, JTable table, String textString) {
         super(titleString);
         selectTool = new SelectTool();
 
@@ -40,8 +38,9 @@ public class SearchStudentFrame extends MyFrame implements ActionListener {
 //        多选框的配置
         jcb = new JComboBox();
         jcb.addItem(BY_NUMBER);
+        jcb.addItem(BY_COURSENAME);
+        jcb.addItem(BY_COURSENO);
         jcb.addItem(BY_NAME);
-        jcb.addItem(BY_MAJOR);
 
 
         topPanel.add(jcb);
@@ -58,9 +57,6 @@ public class SearchStudentFrame extends MyFrame implements ActionListener {
         container.add(topPanel, BorderLayout.NORTH);
     }
 
-
-    //把查询事件放进点击事件再传递下去就可以了，。，。我真是天才，以外来的数据包保存数据好像没有实现，。，。主要是单例模式不熟
-//希望后面有时间使用单例模式写一遍
     @Override
     public void actionPerformed(ActionEvent e) {
         String textString = textField.getText().toString().trim();
@@ -70,30 +66,30 @@ public class SearchStudentFrame extends MyFrame implements ActionListener {
             String jcbString = jcb.getSelectedItem().toString();
             String selectBy;
             if (jcbString.equals(BY_NUMBER)) {
-                selectBy = "Sno";
+                selectBy = "CteacherNo";
             } else if (jcbString.equals(BY_NAME)) {
-                selectBy = "Sname";
+                selectBy = "Cteacher";
+            } else if (jcbString.equals(BY_COURSENAME)) {
+                selectBy = "Cname";
             } else {
-                selectBy = "Smajor";
+                selectBy = "Cno";
             }
 //            合成查询语句, 合成之后一定要打印一下进行检验
 
-            String sqlString = "select * from students "
+            String sqlString = "select * from course "
                     + "where " + selectBy + "=" + selectString
-                    + " order by Sno ";
+                    + " order by Cno ";
             System.out.println("sqlString:" + sqlString);
-            JTable table = selectTool.refresh(1, sqlString);
+            JTable table = selectTool.refresh(2, sqlString);
             this.setVisible(false);
 
             //只能这样传递数据了
-            new SearchStudentFrame("heh", table, textString);
+            new SearchTeacherFrame("heh", table, textString);
         }
     }
 
 
     public static void main(String[] args) {
-        new SearchStudentFrame("查询学生", null, "");
+        new SearchTeacherFrame("dd", null, "");
     }
-
-
 }

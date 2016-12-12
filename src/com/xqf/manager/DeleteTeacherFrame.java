@@ -13,19 +13,18 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * Created by XQF on 2016/12/10.，删除就只根据学号删
+ * Created by XQF on 2016/12/12.
  */
-public class DeleteStudentFrame extends MyFrame implements ActionListener {
-
-    private static final String BTN_LABEL = "学号";
+public class DeleteTeacherFrame extends MyFrame implements ActionListener {
+    private static final String BTN_LABEL = "教师编号";
     private static final String BTN_SEARCH = "获取信息";
-    private static final String BTN_DELETE = "删除学生";
+    private static final String BTN_DELETE = "删除老师";
 
     private JTextField textField;
     private SelectTool selectTool;
     private JTable table;
 
-    public DeleteStudentFrame(String titleString, JTable table, String textString) {
+    public DeleteTeacherFrame(String titleString, JTable table, String textString) {
         super(titleString);
         selectTool = new SelectTool();
         Container container = this.getContentPane();
@@ -51,9 +50,7 @@ public class DeleteStudentFrame extends MyFrame implements ActionListener {
         topPanel.add(searchBtn);
         searchBtn.addActionListener(this);
 
-
         container.add(topPanel, BorderLayout.NORTH);
-
     }
 
     @Override
@@ -62,37 +59,33 @@ public class DeleteStudentFrame extends MyFrame implements ActionListener {
         if (btnString.equals(BTN_SEARCH)) {
             String textString = textField.getText().toString().trim();
             if (!textString.isEmpty()) {
-                String selectBy = "Sno";
+                String selectBy = "CteacherNo";
 //            合成查询语句, 合成之后一定要打印一下进行检验
 
-                String sqlString = "select * from students "
+                String sqlString = "select * from course "
                         + "where " + selectBy + "=" + textField.getText().toString().trim()
-                        + " order by Sno ";
+                        + " order by Cno ";
                 System.out.println("sqlString:" + sqlString);
-                JTable table = selectTool.refresh(1, sqlString);
+                JTable table = selectTool.refresh(2, sqlString);
                 this.setVisible(false);
 
                 //只能这样传递数据了
-                new DeleteStudentFrame("heh", table, textString);
+                new DeleteTeacherFrame("heh", table, textString);
             }
         } else {
             // TODO: 2016/12/10 删除有关这个学生的所有信息
 
-            deleteStudent();
+            deleteTeacher();
 
         }
     }
 
-
-    //删除这个学生的所有信息（基本信息和选课记录什么的）
-    private void deleteStudent() {
-        String sqlString1 = "delete from students where Sno=" + textField.getText().toString().trim();
-        String sqlString2 = "delete from sc  where Sno=" + textField.getText().toString().trim();
+    private void deleteTeacher() {
+        String sqlString1 = "delete from course where CteacherNo=" + textField.getText().toString().trim();
         Connection connection = DBHelper.getDbHelper().getConnection();
         try {
             Statement stmt = connection.createStatement();
             stmt.execute(sqlString1);
-            stmt.execute(sqlString2);
             JOptionPane.showMessageDialog(null, "删除成功！", "提示", JOptionPane.CLOSED_OPTION);
             stmt.close();
             connection.close();
@@ -102,8 +95,6 @@ public class DeleteStudentFrame extends MyFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new DeleteStudentFrame("ehh", null, "");
+        new DeleteTeacherFrame("ejj", null, "");
     }
-
-
 }

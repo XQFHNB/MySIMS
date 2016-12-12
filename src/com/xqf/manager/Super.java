@@ -113,10 +113,11 @@ public class Super extends MyFrame implements ActionListener {
             new AddTeacherFrame("heh");
         }
         if (btnString.equals(DELETE_TEACHER)) {
+            new DeleteTeacherFrame("删除老师", null, "");
 
         }
         if (btnString.equals(SEARCH_TEACHER)) {
-
+            new SearchTeacherFrame("查询老师", null, "");
         }
         if (btnString.equals(REFRESH)) {
             // TODO: 2016/12/7 点击刷新按钮会刷新两个界面的内容，因此两个调用refresh方法
